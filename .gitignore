@@ -1,0 +1,11 @@
+# Binaries and test output
+*.exe
+*.test
+*.out
+/go-repository-template
+
+# Local configuration and editor state
+.env
+.DS_Store
+.idea/
+.vscode/

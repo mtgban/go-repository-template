@@ -1,0 +1,62 @@
+name: 'Run CI'
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+# A push that supersedes another stops it rather than racing it.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Go
+        uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+
+      - name: Check formatting
+        run: |
+          unformatted=$(gofmt -s -l .)
+          if [ -n "$unformatted" ]; then
+            echo "these files are not gofmt-ed:"
+            echo "$unformatted"
+            exit 1
+          fi
+
+      - name: go vet ./...
+        run: go vet ./...
+
+      - name: Lint
+        run: |
+          go run github.com/mgechev/revive@v1.13.0 \
+            -set_exit_status -config .revive.toml ./...
+
+      # revive reads the syntax tree; staticcheck follows the values through
+      # it. Pinned, since a new release finding new things would fail a build
+      # that changed nothing.
+      - name: Staticcheck
+        run: go run honnef.co/go/tools/cmd/staticcheck@2026.2.1 ./...
+
+      # The standard library ships with the toolchain, which Dependabot's
+      # go.mod updates do not cover. Not pinned: the verdict follows the
+      # vulnerability database, which moves whichever release reads it.
+      - name: Govulncheck
+        run: go run golang.org/x/vuln/cmd/govulncheck@latest ./...
+
+      - name: go build ./...
+        run: go build ./...
+
+      - name: go test -race ./...
+        run: go test -race ./...

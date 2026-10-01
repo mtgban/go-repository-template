@@ -1,0 +1,46 @@
+# The mtgban org's rule set, shared by every Go repository so a habit picked
+# up in one reads the same in the others. A repository may add a rule, or
+# drop one with a comment saying why; keep the list otherwise as it is.
+
+ignoreGeneratedHeader = false
+severity = "error"
+confidence = 0.8
+errorCode = 1
+warningCode = 1
+
+[rule.blank-imports]
+[rule.context-as-argument]
+[rule.context-keys-type]
+[rule.dot-imports]
+[rule.empty-block]
+[rule.error-naming]
+[rule.error-return]
+[rule.error-strings]
+[rule.errorf]
+[rule.exported]
+[rule.increment-decrement]
+[rule.indent-error-flow]
+[rule.package-comments]
+[rule.range]
+[rule.receiver-naming]
+[rule.redefines-builtin-id]
+[rule.superfluous-else]
+[rule.time-naming]
+[rule.unexported-return]
+[rule.unnecessary-format]
+[rule.unchecked-type-assertion]
+[rule.use-any]
+[rule.use-errors-new]
+[rule.use-waitgroup-go]
+# Name only families whose error reports nothing a caller could act on, such
+# as a failed print to stdout or stderr, each with a line saying why. Fix any
+# other unchecked error rather than adding it here.
+[rule.unhandled-error]
+  arguments = ["fmt.Print.*", "fmt.Fprint.*"]
+[rule.unreachable-code]
+[rule.var-declaration]
+[rule.var-naming]
+# Compare with slices/maps, or a comparison written for the type:
+# https://github.com/mtgban/mtgban-website/blob/master/docs/adr/0002-no-reflect.md
+[rule.imports-blocklist]
+  arguments = ["reflect"]
