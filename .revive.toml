@@ -32,11 +32,12 @@ warningCode = 1
 [rule.use-any]
 [rule.use-errors-new]
 [rule.use-waitgroup-go]
-# Name only families whose error reports nothing a caller could act on, such
-# as a failed print to stdout or stderr, each with a line saying why. Fix any
-# other unchecked error rather than adding it here.
+# Name only families whose error reports nothing a caller could act on, each
+# with a line saying why: a failed print to stdout or stderr, and a Close on
+# the way out. Fix any other unchecked error rather than adding it here.
 [rule.unhandled-error]
-  arguments = ["fmt.Print.*", "fmt.Fprint.*"]
+  arguments = ["fmt.Print.*", "fmt.Fprint.*", "io.Closer.Close",
+               "os.File.Close"]
 [rule.unreachable-code]
 [rule.var-declaration]
 [rule.var-naming]
