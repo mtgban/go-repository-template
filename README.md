@@ -19,7 +19,7 @@ out matching the others.
 ## What every pull request runs
 
 `.github/workflows/ci.yml`, under the Go version that `go.mod` names
-(`go 1.26.0`, `toolchain go1.26.8`):
+(`go 1.26.0`, `toolchain go1.26.9`):
 
 | Gate | Command |
 |---|---|
@@ -49,7 +49,7 @@ the cooldown, and `github.com/mtgban/*` modules are proposed without waiting.
 Run them under the same toolchain as CI:
 
 ```bash
-export GOTOOLCHAIN=go1.26.8
+export GOTOOLCHAIN=go1.26.9
 "$(go env GOROOT)/bin/gofmt" -s -l .
 go vet ./...
 go run github.com/mgechev/revive@v1.13.0 -set_exit_status -config .revive.toml ./...
